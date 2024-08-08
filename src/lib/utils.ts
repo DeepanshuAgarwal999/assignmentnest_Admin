@@ -55,15 +55,29 @@ export const generateColor = (length: number): string => {
   return colors[length % 10];
 };
 
-export function formatDate(timestamp: number): string {
+export function formatDate(timestamp: number | string): string {
+  const date = new Date(timestamp);
+
+  // Extract day, month, and year
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Months are zero-indexed
+  const year = date.getUTCFullYear();
+
+  // Format to d/m/yyyy
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+}
+export function formatDateEpoch(timestamp: number): string {
   const date = new Date(timestamp * 1000);
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
+  // Extract day, month, and year
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Months are zero-indexed
+  const year = date.getUTCFullYear();
 
-  return date.toLocaleDateString("en-IN", options);
+  // Format to d/m/yyyy
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
 }
-

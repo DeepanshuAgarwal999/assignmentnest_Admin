@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import Link from "next/link"
+import { formatDate } from "@/lib/utils"
 
 
 
@@ -90,7 +91,7 @@ export const columns: ColumnDef<Assignment>[] = [
     {
         id: "actions",
         enableHiding: false,
-        header:"Actions",
+        header: "Actions",
         cell: ({ row }) => {
             const assignment = row.original
 
@@ -156,7 +157,7 @@ export const columns: ColumnDef<Assignment>[] = [
         accessorKey: "deadline",
         header: "Deadline",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("deadline")}</div>
+            <div className="capitalize">{formatDate(row.getValue("deadline"))}</div>
         ),
     },
     {
@@ -205,7 +206,7 @@ export const columns: ColumnDef<Assignment>[] = [
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
-        accessorKey: "amount",  
+        accessorKey: "amount",
         header: ({ column }) => {
             return (
                 <Button
@@ -229,7 +230,7 @@ export const columns: ColumnDef<Assignment>[] = [
             return <div className="text-right font-medium">{formatted}</div>
         },
     },
-    
+
 ]
 
 export function AdminTable({ data }: { data: Assignment[] }) {
@@ -312,8 +313,8 @@ export function AdminTable({ data }: { data: Assignment[] }) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border text-nowrap">
-                <Table>
+            <div className="rounded-lg border text-nowrap bg-white">
+                <Table className="">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -336,6 +337,7 @@ export function AdminTable({ data }: { data: Assignment[] }) {
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
+                                
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                 >
