@@ -34,11 +34,17 @@ const Quote = () => {
     }
 
     return (
-        <Suspense fallback={<Loader />}>
+        <>
             <QuoteTable data={Quote} />
             {quote === 'true' && orderId && <CreateQuote orderId={orderId} />}
-        </Suspense>
+        </>
     )
 }
 
-export default Quote
+export default function SuspenseWrapper() {
+    return (
+        <Suspense fallback={<Loader />}>
+            <Quote />
+        </Suspense>
+    );
+}

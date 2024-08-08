@@ -1,4 +1,5 @@
 'use client'
+
 import React, { Suspense, useEffect, useState } from 'react'
 import { AdminTable, Assignment as AssignmentType } from './table/AdminTable'
 import { axiosInstance } from '@/lib/axios.instance';
@@ -9,51 +10,45 @@ import { AssignmentDetails } from './AssignmentDetail';
 const Assignment = () => {
 
     const [data, setData] = useState<AssignmentType[] | []>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const params = useSearchParams();
 
-    const details = params.get('details')
-    const assignmentID = params.get('id')
+    const details = params.get('details');
+    const assignmentID = params.get('id');
 
     useEffect(() => {
         (async () => {
             try {
-                const { data } = await axiosInstance.get('/admin/get-quoted')
+                const { data } = await axiosInstance.get('/admin/get-quoted');
                 if (data) {
-                    setData(data.data)
+                    setData(data.data);
                 }
             } catch (error) {
-                console.log(error)
+                console.log(error);
+            } finally {
+                setIsLoading(false);
             }
-            finally {
-                setIsLoading(false)
-            }
-        })()
-    }, [details, assignmentID])
+        })();
+    }, [details, assignmentID]);
 
     if (isLoading) {
-        return <Loader />
+        return <Loader />;
     }
 
     if (details === 'true' && assignmentID) {
         const assignment = data.find((assignment) => assignmentID === assignment.order_id);
         if (assignment) {
-            return (
-                <Suspense fallback={<Loader />}>
-                    <AssignmentDetails assignment={assignment} />;
-                </Suspense>
-            )
+            return <AssignmentDetails assignment={assignment} />;
         }
     }
 
+    return <AdminTable data={data} />;
+};
+
+export default function SuspenseWrapper() {
     return (
         <Suspense fallback={<Loader />}>
-            <>
-                <AdminTable data={data} />
-            </>
+            <Assignment />
         </Suspense>
-
-    )
+    );
 }
-
-export default Assignment
