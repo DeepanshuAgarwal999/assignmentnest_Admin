@@ -95,7 +95,7 @@ export default function Login() {
                 </CardContent>
             </div>
             <CardFooter className="flex justify-center mt-4">
-                Don't have account ?&nbsp;<Link href={'/signup'} className="underline text-purple-600">Register Now</Link>
+                Don&apos;t have account ?&nbsp;<Link href={'/signup'} className="underline text-purple-600">Register Now</Link>
             </CardFooter>
         </Card>
 
