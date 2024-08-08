@@ -18,7 +18,7 @@ import { SubmitButton } from '../SubmitButton';
 import { useRouter } from 'next/navigation';
 import { axiosInstance } from '@/lib/axios.instance';
 import { useToast } from '../ui/use-toast';
-import { revalidatePath } from 'next/cache';
+import closeImage from '../../../public/icons/close.svg'
 
 const CreateQuote = ({ orderId }: { orderId: string }) => {
     const [open, setOpen] = useState<boolean>(true);
@@ -72,7 +72,7 @@ const CreateQuote = ({ orderId }: { orderId: string }) => {
             <AlertDialogContent className=''>
                 <AlertDialogHeader>
                     <AlertDialogTitle className='flex items-start justify-between'>Create Quote
-                        <Image src={'/icons/close.svg'} height={20} width={20} alt='close' className='cursor-pointer invert' onClick={onClose} />
+                        <Image src={closeImage} height={20} width={20} alt='close' className='cursor-pointer invert' onClick={onClose} />
                     </AlertDialogTitle>
                 </AlertDialogHeader>
                 <>

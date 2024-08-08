@@ -1,20 +1,18 @@
 'use client'
 import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ArrowLeftEndOnRectangleIcon, Bars3Icon, ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { navigation } from '@/constants/navigation'
 import Link from 'next/link'
 import { classNames } from './LeftSideBar'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-
+import logoImage from '../../../public/images/logo.jpg'
 
 const MobileSideNav = ({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, setSidebarOpen: (val: boolean) => void }) => {
 
     const pathname = usePathname()
-    const handleLogout = () => {
-
-    }
+    
     return (
         <div className='lg:hidden'>
             <button type="button" className="-m-2.5 p-2.5 text-gray-700 " onClick={() => setSidebarOpen(true)}>
@@ -65,7 +63,7 @@ const MobileSideNav = ({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, 
                                 {/* Sidebar component, swap this element with another sidebar if you like */}
                                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
                                     <div className="flex h-14 shrink-0 items-center  pt-4">
-                                        <Link href='/d'><Image src={'/images/logo.jpg'} alt="AssignmentNest" height={120} width={120} /></Link>
+                                        <Link href='/'><Image src={logoImage} alt="AssignmentNest" height={120} width={120} /></Link>
                                     </div>
                                     <nav className="flex flex-1 flex-col">
                                         <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -138,7 +136,7 @@ const MobileSideNav = ({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean, 
                     </div>
                 </Dialog>
             </Transition.Root>
-           
+
 
         </div>
 

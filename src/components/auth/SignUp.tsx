@@ -60,7 +60,6 @@ const SignUp = () => {
     <Card className="w-full max-w-[600px] mx-auto mt-16 px-8 pt-6 bg-white">
       <div className="flex flex-col w-full sm:flex-row justify-between items-center sm:gap-10">
         <CardHeader>
-          {/* <CardTitle><Image src={"/images/logo.jpg"} alt="AssignmentNest" height={120} width={120} /></CardTitle> */}
           <CardTitle className="text-3xl sm:text-4xl">SignUp</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 w-full">

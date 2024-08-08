@@ -6,7 +6,7 @@ import { navigation } from '@/constants/navigation'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-// import MobileSideNav from './MobileSideNav'
+import logoImage from '../../../public/images/logo.jpg'
 
 export function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -24,7 +24,7 @@ const LeftSidebar = () => {
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-8 overflow-y-auto border-r border-gray-200 bg-white px-6">
                     <div className="flex h-14 shrink-0 items-center pt-4 ">
-                        <Link href='/'><Image src={'/images/logo.jpg'} alt="assignmentNest" width={120} height={120} /></Link>
+                        <Link href='/'><Image src={logoImage} alt="assignmentNest" width={120} height={120} /></Link>
                     </div>
                     <nav className="flex flex-1 flex-col">
                         <ul role="list" className="flex flex-1 flex-col gap-y-7">

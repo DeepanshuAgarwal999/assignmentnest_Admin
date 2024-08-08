@@ -3,7 +3,7 @@ import SignUpComponent from '@/components/auth/SignUp'
 
 const SignUp = () => {
   return (
-    <div><SignUpComponent /></div>
+    <><SignUpComponent /></>
   )
 }
 

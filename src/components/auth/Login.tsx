@@ -80,7 +80,6 @@ export default function Login() {
 
             <div className="flex flex-col w-full sm:flex-row justify-between items-center sm:gap-10">
                 <CardHeader className=" text-center">
-                    <CardTitle className="mx-auto"><Image src={"/images/logo.jpg"} alt="AssignmentNest" height={120} width={120} /></CardTitle>
                     <CardTitle className="text-3xl sm:text-4xl tracking-widest">Login</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 w-full">
