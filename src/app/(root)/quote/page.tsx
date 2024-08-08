@@ -4,7 +4,7 @@ import Loader from '@/components/shared/Loader'
 import { AssignmentQuote, QuoteTable } from '@/components/table/QuoteTable'
 import { axiosInstance } from '@/lib/axios.instance'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
 const Quote = () => {
     const [Quote, setQuote] = useState<AssignmentQuote[] | []>([])
@@ -27,16 +27,17 @@ const Quote = () => {
                 setIsLoading(false)
             }
         })()
-    }, [quote,orderId])
+    }, [quote, orderId])
 
     if (isLoading) {
         return <Loader />
     }
 
     return (
-        <><QuoteTable data={Quote} />
+        <Suspense fallback={<Loader />}>
+            <QuoteTable data={Quote} />
             {quote === 'true' && orderId && <CreateQuote orderId={orderId} />}
-        </>
+        </Suspense>
     )
 }
 
