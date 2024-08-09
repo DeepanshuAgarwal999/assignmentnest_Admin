@@ -29,7 +29,7 @@ const Assignment = () => {
                 setIsLoading(false);
             }
         })();
-    }, [details, orderID]);
+    }, []);
 
     if (isLoading) {
         return <Loader />;

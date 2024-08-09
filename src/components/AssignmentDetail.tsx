@@ -12,6 +12,7 @@ import Loader from "./shared/Loader"
 import { SubmitButton } from "./SubmitButton"
 import { useToast } from "./ui/use-toast"
 import AssignWriter from "./AssignWriter"
+import GiveSolution from "./GiveSolution"
 
 export type PaymentStatusType =
     | 'PENDING'
@@ -85,7 +86,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
         }
 
     }
-
+   
     return (
         <section className="container">
             <header className="sm:sticky top-20 z-40 flex items-center justify-center sm:justify-between flex-wrap gap-4 bg-white p-2 rounded-lg shadow-md">
@@ -101,9 +102,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                 <div className="bg-white/75 rounded-lg shadow-md  mt-6 px-3 py-4">
                     <h1 className="text-xl sm:text-2xl font-semibold">Customer Information</h1>
                     <article className="p-6 bg-gray-50 shadow-sm rounded-xl mt-6">
-                        <p>
-                            <span className="font-medium">Assignment Name: </span><span>{assignment.assignment_name}</span>
-                            <br />
+                        <p className="space-y-3">
                             <span className="font-medium">Phone: </span><span>{assignment.phone}</span>
                             <br />
                             <span className="font-medium">Email: </span><span>{assignment.email}</span>
@@ -128,13 +127,16 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                                     )
 
                                 })
-                            }</div>
+                            }
+                        </div>
                     }
+
                 </div>
 
                 <div className="bg-white/75 rounded-lg shadow-md  mt-6 px-3 py-4">
                     <h1 className="text-xl sm:text-2xl font-semibold">Order Information</h1>
                     <article className="p-6 bg-gray-50 rounded-xl mt-6 shadow-sm">
+                        <span className="font-medium">Assignment Name: </span><span>{assignment.assignment_name}</span>
                         <span className="font-medium">Deadline: </span><span>{formatDate(assignment.deadline)}</span>
                         <br />
                         <span className="font-medium">Created At: </span><span>{formatDateEpoch(assignment.created_at)}</span>
@@ -152,6 +154,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                     <h1 className="text-xl sm:text-2xl font-semibold">Assign Writer</h1>
                     <AssignWriter orderId={assignment.order_id} />
                 </div>
+                <GiveSolution orderId={assignment.order_id} />
             </main>
 
         </section >

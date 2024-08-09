@@ -1,18 +1,15 @@
 "use client"
 
 import React, { useState } from 'react'
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { ArrowLeftEndOnRectangleIcon, Bars3Icon, ChevronDownIcon, KeyIcon } from '@heroicons/react/24/outline'
+
+import { ArrowLeftEndOnRectangleIcon, Bars3Icon, BellAlertIcon, ChevronDownIcon, KeyIcon } from '@heroicons/react/24/outline'
 import MobileSideNav from './MobileSideNav'
 import { useGetUserRole } from '@/app/hooks/useGetUserRole'
 import { generateColor, removeCookie } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 const Navbar = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const { role, name } = useGetUserRole();
@@ -31,6 +28,7 @@ const Navbar = () => {
                     <p className='ml-10 capitalize text-gray-900'>{name} ({role})</p>
                     <div className='flex items-center justify-between ml-auto'>
                         <div className='flex items-center gap-2 '>
+                            <Link href={'/notifications'} className='mr-4'><BellAlertIcon className='size-5' /></Link>
                             <div style={{ backgroundColor: generateColor(name.length) }} className='w-8 h-8 rounded-full flex justify-center items-center'>
                                 <p className='text-white'>{name[0]}</p>
                             </div>

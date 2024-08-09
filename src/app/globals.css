@@ -39,3 +39,16 @@
 
 
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(220, 221, 225, 1);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 50px;
+}

@@ -39,9 +39,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import Link from "next/link"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getCookie } from "@/lib/utils"
 
 
 
@@ -106,12 +105,11 @@ export const columns: ColumnDef<Assignment>[] = [
                     <DropdownMenuContent align="start" className="bg-white">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         {assignment.order_status === 'UPLOADED' && <DropdownMenuItem className="cursor-pointer hover:bg-slate-200"
-
+                            onClick={() => handleReviewSolution(assignment.fileName, assignment.order_id)}
                         >
                             Review solution
                         </DropdownMenuItem>}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
                         <DropdownMenuItem><Link href={`/?details=true&id=${assignment.order_id}`}>View Assignment details</Link></DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -232,6 +230,31 @@ export const columns: ColumnDef<Assignment>[] = [
     },
 
 ]
+const handleReviewSolution = async (fileName: string, orderId: string) => {
+    const token = getCookie('token');
+    try {
+        const res = await fetch(`/admin/download-solution/` + orderId, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        const blob = await res.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = fileName; // You can set the file name here
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        // console.log(data)
+    }
+    catch (error) {
+        console.log(error)
+    }
+
+}
 
 export function AdminTable({ data }: { data: Assignment[] }) {
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -313,57 +336,55 @@ export function AdminTable({ data }: { data: Assignment[] }) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-lg border text-nowrap bg-white">
-                <Table className="">
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
+            <Table className="custom-scrollbar rounded-lg border  bg-white">
+                <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <TableRow key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => {
+                                return (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
                                             )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    No results.
-                                </TableCell>
+                                    </TableHead>
+                                )
+                            })}
+                        </TableRow>
+                    ))}
+                </TableHeader>
+                <TableBody >
+                    {table.getRowModel().rows?.length ? (
+                        table.getRowModel().rows.map((row) => (
+                            <TableRow
+
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell key={cell.id}>
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </TableCell>
+                                ))}
                             </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell
+                                colSpan={columns.length}
+                                className="h-24 text-center"
+                            >
+                                No results.
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}

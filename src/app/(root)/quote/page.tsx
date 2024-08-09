@@ -3,16 +3,15 @@ import CreateQuote from '@/components/forms/CreateQuote'
 import Loader from '@/components/shared/Loader'
 import { AssignmentQuote, QuoteTable } from '@/components/table/QuoteTable'
 import { axiosInstance } from '@/lib/axios.instance'
-import { useSearchParams } from 'next/navigation'
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Quote = () => {
+const Quote = ({ searchParams }: SearchParamProps) => {
+
     const [Quote, setQuote] = useState<AssignmentQuote[] | []>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const params = useSearchParams();
-    const quote = params.get('create_quote')
-    const orderId = params.get('order_id')
-
+    const quote = searchParams?.create_quote as string
+    const orderId = searchParams?.order_id as string
+console.log(searchParams)
     useEffect(() => {
         (async () => {
             try {
@@ -41,10 +40,4 @@ const Quote = () => {
     )
 }
 
-export default function SuspenseWrapper() {
-    return (
-        <Suspense fallback={<Loader />}>
-            <Quote />
-        </Suspense>
-    );
-}
+export default Quote
