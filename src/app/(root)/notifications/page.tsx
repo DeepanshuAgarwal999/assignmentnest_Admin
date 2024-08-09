@@ -32,7 +32,7 @@ export default function Notifications() {
         <section className="max-w-5xl flex flex-col gap-4 h-[550px] overflow-y-auto custom-scrollbar ">
             {
                 notification.length !== 0 ? notification.map((notification) => (
-                    <Notification notification={notification} />
+                    <Notification notification={notification} key={notification.notification_id}/>
                 )) : <Alert>
                     <AlertDescription className="text-center font-semibold text-lg">No Notification yet</AlertDescription>
                 </Alert>
