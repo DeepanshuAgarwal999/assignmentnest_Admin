@@ -2,7 +2,7 @@
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Assignment } from "./table/AdminTable"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
@@ -51,7 +51,6 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                 if (data && data.data) {
                     setPaymentDetails(data.data)
                 }
-                console.log(data.data)
             } catch (error) {
                 console.error(error)
             }
@@ -59,7 +58,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                 setIsLoading(false)
             }
         })()
-    }, [])
+    }, [isPaymentActivate])
 
     const handlePayment = async (paymentId: string) => {
         try {
@@ -69,18 +68,17 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                 toast({
                     title: "Payment Initiated successfully"
                 })
-                return;
             } else {
                 toast({
                     title: "Payment already initiated"
                 })
             }
-
         } catch (error) {
             console.log(error)
             toast({
                 title: "Unable to active payment try again later"
             })
+
         }
         finally {
             setIsPaymentActivate({ isLoading: false, id: "" })
@@ -124,8 +122,8 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                                     return (
                                         <article className="p-4 bg-gray-50 shadow-sm rounded-xl mt-6 border border-dashed border-purple-500" key={idx}>
                                             <h1 className="text-xl font-semibold text-center">{idx == 0 ? "Payment 1" : "Payment 2"}</h1>
-
-                                            <SubmitButton className="mt-4 w-fit mx-auto" isLoading={isPaymentActivate.isLoading && isPaymentActivate.id === payment.id} onClick={() => handlePayment(payment.id)}>Activate {payment.amount}$</SubmitButton>
+                                            <p className="text-center mt-2 font-medium">Activate for {payment.amount}$</p>
+                                            <SubmitButton className="mt-4 w-fit mx-auto" isLoading={isPaymentActivate.isLoading && isPaymentActivate.id === payment.id} onClick={() => handlePayment(payment.id)} disabled={!!payment.paypalId}>{!!payment.paypalId ? "Activated" : "Activate"}</SubmitButton>
                                         </article>
                                     )
 
@@ -152,7 +150,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
 
                 <div className="bg-white/75 rounded-lg shadow-md  mt-6 px-3 py-4 relative">
                     <h1 className="text-xl sm:text-2xl font-semibold">Assign Writer</h1>
-                    <AssignWriter />
+                    <AssignWriter orderId={assignment.order_id} />
                 </div>
             </main>
 

@@ -14,7 +14,7 @@ const Assignment = () => {
     const params = useSearchParams();
 
     const details = params.get('details');
-    const assignmentID = params.get('id');
+    const orderID = params.get('id');
 
     useEffect(() => {
         (async () => {
@@ -29,14 +29,14 @@ const Assignment = () => {
                 setIsLoading(false);
             }
         })();
-    }, [details, assignmentID]);
+    }, [details, orderID]);
 
     if (isLoading) {
         return <Loader />;
     }
 
-    if (details === 'true' && assignmentID) {
-        const assignment = data.find((assignment) => assignmentID === assignment.order_id);
+    if (details === 'true' && orderID) {
+        const assignment = data.find((assignment) => orderID === assignment.order_id);
         if (assignment) {
             return <AssignmentDetails assignment={assignment} />;
         }

@@ -42,8 +42,8 @@ const CreateQuote = ({ orderId }: { orderId: string }) => {
                 toast({
                     title: "Quote created Successfully"
                 })
-                onClose()
-                // revalidatePath('/quote')
+                setOpen(false)
+                router.push('/')
             }
             else {
                 toast({

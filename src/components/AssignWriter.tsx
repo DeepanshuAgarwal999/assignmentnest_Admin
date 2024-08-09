@@ -13,17 +13,20 @@ import {
 import { axiosInstance } from '@/lib/axios.instance'
 import { useToast } from './ui/use-toast'
 import Loader from './shared/Loader'
+import { SubmitButton } from './SubmitButton'
 
 type WriterType = {
     writerId: string,
     writerName: string
 }
 
-const AssignWriter = () => {
+const AssignWriter = ({ orderId }: { orderId: string }) => {
     const [writers, setWriters] = useState<WriterType[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isAssigningWriter, setIsAssigningWriter] = useState<boolean>(false)
     const { toast } = useToast()
     const [writer, setWriter] = useState<string | null>(null)
+
     useEffect(() => {
         (async () => {
             try {
@@ -51,6 +54,34 @@ const AssignWriter = () => {
         })()
     }, [])
 
+    const handleAssignWriter = async () => {
+        if (!writer) {
+            toast({
+                title: "Please select atLeast one writer"
+            })
+            return;
+        }
+        try {
+            setIsAssigningWriter(true);
+            const { data } = await axiosInstance.get(`/admin/${writer}/assign-writer/${orderId}`)
+            if (data) {
+                toast({
+                    title: "writer notified successfully"
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast({
+                title: "Unable to assign writer at this moment",
+                description: "Please try again later"
+            })
+        }
+        finally {
+            setIsAssigningWriter(false)
+        }
+    }
+
     return (
         <>{
             isLoading ? <Loader className='absolute top-28' /> :
@@ -72,10 +103,9 @@ const AssignWriter = () => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
+                        <SubmitButton isLoading={isAssigningWriter} className='mt-10 bg-gradient-to-r from-purple-500 via-purple-500 to-purple-400' onClick={handleAssignWriter}>Assign Writer</SubmitButton>
                     </article>
                 </div>
-
-
         }</>
     )
 }
