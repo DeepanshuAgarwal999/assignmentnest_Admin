@@ -9,30 +9,33 @@ export default function Notifications() {
     const [notification, setNotification] = useState<AppNotification[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
+    const fetchNotifications = async () => {
+        setIsLoading(true)
+        try {
+            const { data } = await axiosInstance.get('/notification/get-admin')
+            if (data.data) {
+                setNotification(data.data)
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axiosInstance.get('/notification/get-admin')
-                if (data.data) {
-                    setNotification(data.data)
-                }
-            } catch (error) {
-                console.log(error)
-            }
-            finally{
-                setIsLoading(false)
-            }
-        })()
+        fetchNotifications()
     }, [])
+
     if (isLoading) {
         return <Loader />
     }
 
     return (
-        <section className="max-w-5xl flex flex-col gap-4 h-[550px] overflow-y-auto custom-scrollbar ">
+        <section className="max-w-5xl container flex flex-col gap-4 h-[550px] overflow-y-auto custom-scrollbar ">
             {
                 notification.length !== 0 ? notification.map((notification) => (
-                    <Notification notification={notification} key={notification.notification_id}/>
+                    <Notification notification={notification} key={notification.notification_id} refreshNotifications={fetchNotifications} />
                 )) : <Alert>
                     <AlertDescription className="text-center font-semibold text-lg">No Notification yet</AlertDescription>
                 </Alert>

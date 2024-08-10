@@ -11,7 +11,7 @@ const Quote = ({ searchParams }: SearchParamProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const quote = searchParams?.create_quote as string
     const orderId = searchParams?.order_id as string
-console.log(searchParams)
+    
     useEffect(() => {
         (async () => {
             try {

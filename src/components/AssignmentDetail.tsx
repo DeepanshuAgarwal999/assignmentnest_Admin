@@ -86,7 +86,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
         }
 
     }
-   
+
     return (
         <section className="container">
             <header className="sm:sticky top-20 z-40 flex items-center justify-center sm:justify-between flex-wrap gap-4 bg-white p-2 rounded-lg shadow-md">
@@ -154,7 +154,7 @@ export function AssignmentDetails({ assignment }: { assignment: Assignment }) {
                     <h1 className="text-xl sm:text-2xl font-semibold">Assign Writer</h1>
                     <AssignWriter orderId={assignment.order_id} />
                 </div>
-                <GiveSolution orderId={assignment.order_id} />
+                {(assignment.order_status === 'UPLOADED' || assignment.order_status === 'COMPLETED' || assignment.order_status === 'REWORK' || assignment.order_status === 'REFUNDED') && <GiveSolution orderId={assignment.order_id} />}
             </main>
 
         </section >

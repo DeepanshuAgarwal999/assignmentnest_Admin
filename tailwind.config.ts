@@ -22,6 +22,7 @@ const config = {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
+      
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
@@ -53,7 +54,9 @@ const config = {
           foreground: "var(--card-foreground)",
         },
       },
-
+      backgroundImage:{
+        employeeBg:"url('/images/employeeBg.jpg')"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

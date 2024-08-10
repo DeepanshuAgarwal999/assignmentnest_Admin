@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table"
 import Link from "next/link"
 import { formatDate, getCookie } from "@/lib/utils"
+import { StatusBadge } from "../shared/StatusBadge"
 
 
 
@@ -135,7 +136,7 @@ export const columns: ColumnDef<Assignment>[] = [
         accessorKey: "order_status",
         header: "Order Status",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("order_status")}</div>
+            <div className="capitalize"><StatusBadge status={row.getValue("order_status")} /></div>
         ),
     },
     {
