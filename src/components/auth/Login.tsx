@@ -10,7 +10,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-import { Button } from "@/components/ui/button"
 import {
     Form,
 
@@ -18,10 +17,8 @@ import {
 import TextField from "../TextField"
 import { SubmitButton } from "../SubmitButton"
 import Link from "next/link"
-import Image from "next/image"
-import { getCookie, setCookie } from "@/lib/utils"
+import { setCookie } from "@/lib/utils"
 import { useRouter } from "next/navigation"
-import { useGetUserRole } from "@/app/hooks/useGetUserRole"
 import { useToast } from "../ui/use-toast"
 
 const FormSchema = z.object({
