@@ -32,7 +32,7 @@ RUN npm install -g pnpm
 COPY --from=builder /app ./
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 3001
 
 # Command to run the application
 CMD ["pnpm", "start"]
