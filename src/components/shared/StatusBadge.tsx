@@ -26,7 +26,7 @@ export const StatusBadge = ({ status }: { status: OrderStatusType }) => {
                 className="h-fit w-3"
             />
             <p
-                className={clsx("text-sm capitalize ", {
+                className={clsx("text-xs capitalize ", {
                     "text-green-500": status === "UPLOADED" || status === 'ASSIGNED',
                     "text-blue-500": status === "PROCESSING",
                     "text-white": status === "CANCELLED" || status === 'REFUNDED' || status === 'REWORK',

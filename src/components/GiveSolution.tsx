@@ -69,7 +69,6 @@ const GiveSolution = ({ orderId }: { orderId: string }) => {
         try {
             setIsGiveBtnLoading(true)
             const { status, data } = await axiosInstance.get(`/admin/process-solution/${orderId}`)
-            console.log(data)
             if (status === 200) {
                 toast({
                     title: data.message
@@ -90,7 +89,7 @@ const GiveSolution = ({ orderId }: { orderId: string }) => {
     return (
         <div className="bg-white/75 rounded-lg shadow-md  mt-6 px-3 py-4 relative">
             <h1 className="text-xl sm:text-2xl font-semibold">Solution Information</h1>
-            <p className='mt-2'> Solution name -  {isLoading ? <Loader className="absolute top-[66px] left-44 " /> : solution?.name}</p>
+            <p className='mt-2'> Solution name -  { isLoading ? <Loader className="absolute top-[66px] left-44 " /> : solution?.name}</p>
             <SubmitButton className="bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-200 mt-4" isLoading={isViewBtnLoading} onClick={viewSolution}>Review solution</SubmitButton>
             <SubmitButton className="bg-gradient-to-r from-green-500 to-white/40 mt-4" isLoading={isGiveBtnLoading} onClick={sendSolution}>Give solution</SubmitButton>
         </div>

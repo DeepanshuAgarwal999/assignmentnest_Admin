@@ -52,6 +52,7 @@ export type Assignment = {
     assignment_name: string;
     assignment_type: string;
     order_status: OrderStatusType;
+    writer_Id: string,
     re_workable: boolean;
     created_at: number;
     email: string;
@@ -105,11 +106,7 @@ export const columns: ColumnDef<Assignment>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="bg-white">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {assignment.order_status === 'UPLOADED' && <DropdownMenuItem className="cursor-pointer hover:bg-slate-200"
-                            onClick={() => handleReviewSolution(assignment.fileName, assignment.order_id)}
-                        >
-                            Review solution
-                        </DropdownMenuItem>}
+                       
                         <DropdownMenuSeparator />
                         <DropdownMenuItem><Link href={`/?details=true&id=${assignment.order_id}`}>View Assignment details</Link></DropdownMenuItem>
                     </DropdownMenuContent>
@@ -231,31 +228,7 @@ export const columns: ColumnDef<Assignment>[] = [
     },
 
 ]
-const handleReviewSolution = async (fileName: string, orderId: string) => {
-    const token = getCookie('token');
-    try {
-        const res = await fetch(`/admin/download-solution/` + orderId, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        const blob = await res.blob();
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-        a.download = fileName; // You can set the file name here
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
 
-        // console.log(data)
-    }
-    catch (error) {
-        console.log(error)
-    }
-
-}
 
 export function AdminTable({ data }: { data: Assignment[] }) {
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -285,7 +258,7 @@ export function AdminTable({ data }: { data: Assignment[] }) {
             rowSelection,
         },
     })
-    const columnsToHideByDefault = ["re_workable",]; // Replace with your column ids
+    const columnsToHideByDefault = ["re_workable", 'order_id']; // Replace with your column ids
     React.useEffect(() => {
         table.setPageSize(5)
 

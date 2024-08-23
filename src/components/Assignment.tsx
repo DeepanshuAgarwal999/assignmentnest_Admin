@@ -22,6 +22,7 @@ const Assignment = () => {
                 const { data } = await axiosInstance.get('/admin/get-quoted');
                 if (data) {
                     setData(data.data);
+                    console.log(data.data)
                 }
             } catch (error) {
                 console.log(error);

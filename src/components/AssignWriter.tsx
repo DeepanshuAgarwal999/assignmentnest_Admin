@@ -20,19 +20,19 @@ type WriterType = {
     writerName: string
 }
 
-const AssignWriter = ({ orderId }: { orderId: string }) => {
+const AssignWriter = ({ orderId, writerId }: { orderId: string, writerId: string | null }) => {
     const [writers, setWriters] = useState<WriterType[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isAssigningWriter, setIsAssigningWriter] = useState<boolean>(false)
     const { toast } = useToast()
     const [writer, setWriter] = useState<string | null>(null)
+    const [assignedWriterName, setAssignedWriterName] = useState<string | null>(null)
 
     useEffect(() => {
         (async () => {
             try {
                 const { data } = await axiosInstance.get('/admin/get-writers')
                 if (data) {
-                    console.log(data)
                     if (data.data.length !== 0)
                         setWriters(data.data)
                 }
@@ -41,9 +41,14 @@ const AssignWriter = ({ orderId }: { orderId: string }) => {
                         title: "No writer found"
                     })
                 }
-
+                if (writerId) {
+                    const getWriter = await axiosInstance.get(`/admin/writer-info/${writerId}`)
+                    if (getWriter.status == 200 && getWriter.data) {
+                        setAssignedWriterName(getWriter.data.data.name)
+                    }
+                }
             } catch (error) {
-                console.log("error")
+                console.log("error", error)
                 toast({
                     title: "Unable to get writers"
                 })
@@ -53,6 +58,8 @@ const AssignWriter = ({ orderId }: { orderId: string }) => {
             }
         })()
     }, [])
+
+
 
     const handleAssignWriter = async () => {
         if (!writer) {
@@ -82,12 +89,40 @@ const AssignWriter = ({ orderId }: { orderId: string }) => {
         }
     }
 
+    const handleRemoveAndAssignWriter = async () => {
+
+        if (writerId === writer) {
+            toast({
+                title: "Please select different writer"
+            })
+            return;
+        }
+        const payload = {
+            order_id: orderId,
+            writer_remove: writerId,
+            writer_assign: writer
+        }
+        try {
+            setIsAssigningWriter(true)
+            const { data, status } = await axiosInstance.post('/admin/remove-writer', payload)
+            console.log(status)
+            if (status == 200) {
+                toast({
+                    title: data?.message
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        setIsAssigningWriter(false)
+    }
+
     return (
         <>{
             isLoading ? <Loader className='absolute top-28' /> :
                 <div>
                     <article className="p-6 bg-gray-50 shadow-sm rounded-xl mt-6">
-                        <Select onValueChange={(value: string) => setWriter(value)}>
+                        <Select onValueChange={(value: string) => setWriter(value)} >
                             <SelectTrigger className="w-full" >
                                 <SelectValue placeholder="Select a Writer" />
                             </SelectTrigger>
@@ -103,8 +138,11 @@ const AssignWriter = ({ orderId }: { orderId: string }) => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <SubmitButton isLoading={isAssigningWriter} className='mt-10 bg-gradient-to-r from-purple-500 via-purple-500 to-purple-400' onClick={handleAssignWriter}>Assign Writer</SubmitButton>
+                        {writerId ? <SubmitButton isLoading={isAssigningWriter} className='mt-10 bg-gradient-to-r from-purple-500 via-purple-500 to-purple-400' onClick={handleRemoveAndAssignWriter}>Remove and Assign Writer</SubmitButton> :
+                            <SubmitButton isLoading={isAssigningWriter} className='mt-10 bg-gradient-to-r from-purple-500 via-purple-500 to-purple-400' onClick={handleAssignWriter}>Assign Writer</SubmitButton>
+                        }
                     </article>
+                    {assignedWriterName && <p className='mt-4'>Currently assigned writer : <span className='font-medium'>{assignedWriterName}</span></p>}
                 </div>
         }</>
     )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Alert,
     AlertDescription,
@@ -14,12 +14,14 @@ import { useRouter } from 'next/navigation'
 
 const Notification = ({ notification, refreshNotifications }: { notification: AppNotification, refreshNotifications: () => void }) => {
     const { toast } = useToast()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleDelete = async () => {
         if (!notification.notification_id) {
             return
         }
         try {
+            setIsLoading(true)
             const res = await axiosInstance.delete(`/notification/delete/${notification.notification_id}`)
             if (res.status === 200) {
                 toast({
@@ -33,16 +35,19 @@ const Notification = ({ notification, refreshNotifications }: { notification: Ap
                 title: "Unable to process request at this moment"
             })
         }
+        finally {
+            setIsLoading(false)
+        }
     }
     return (
         <Alert>
             <RocketIcon className="h-4 w-4" />
-            <AlertTitle>{notification.message} <Badge variant="secondary" className='ml-2'>{timeAgo(notification.created_at)}</Badge></AlertTitle>
+            <AlertTitle> <Badge variant="secondary" className=''>{timeAgo(notification.created_at)}</Badge></AlertTitle>
             <div className="flex items-center justify-between">
                 <AlertDescription className="flex justify-between items">
-                    {notification.description}
+                    {notification.message}
                 </AlertDescription>
-                <Button className='bg-cyan-400 active:scale-95 ease-in-out duration-150 transition-all' onClick={handleDelete}>Delete</Button>
+                <Button disabled={isLoading} className='bg-cyan-400 active:scale-95 ease-in-out duration-150 transition-all' onClick={handleDelete}>Delete</Button>
             </div>
         </Alert>
     )

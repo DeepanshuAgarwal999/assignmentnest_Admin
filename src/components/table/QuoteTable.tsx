@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import Link from "next/link"
+import { formatDate } from "@/lib/utils"
 
 
 
@@ -147,7 +148,7 @@ export const columns: ColumnDef<AssignmentQuote>[] = [
         accessorKey: "deadline",
         header: "Deadline",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("deadline")}</div>
+            <div className="capitalize">{formatDate((row.getValue("deadline")))}</div>
         ),
     },
     {
