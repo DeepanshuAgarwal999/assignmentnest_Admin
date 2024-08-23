@@ -13,8 +13,8 @@ export const setCookie = (name: string, value: any, days: number = 7) => {
   document.cookie = cookie.serialize(name, value, {
     expires,
     path: "/",
-    // httpOnly: true, // Cookie should not be accessible via JavaScript
-    secure: process.env.NODE_ENV === "production", // Cookie should only be sent over HTTPS in production
+    httpOnly: false, // Cookie should not be accessible via JavaScript
+    // secure: process.env.NODE_ENV === "production", // Cookie should only be sent over HTTPS in production
     sameSite: "lax", // Prevent CSRF attacks
   });
 };
